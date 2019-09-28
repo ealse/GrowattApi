@@ -95,7 +95,7 @@ namespace Ealse.Growatt.Api
         }
 
         /// <summary>
-        /// Gets information about the user currently loggedin and some login information
+        /// Gets information about the user currently logged on and some login information
         /// </summary>
         /// <returns>Information about the current user</returns>
         public async Task<LoginInfo> GetUserData()
