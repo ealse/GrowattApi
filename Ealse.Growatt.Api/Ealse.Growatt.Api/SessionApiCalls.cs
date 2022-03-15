@@ -1,106 +1,168 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Net;
-using Ealse.Growatt.Api.Models;
-using System.Linq;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Ealse.Growatt.Api.Models;
 
 namespace Ealse.Growatt.Api
 {
     public partial class Session : IDisposable
     {
-        public string LoginRelativeUrl => "newLoginAPI.do";
+        public string LoginRelativeUrl => "login";
 
-        public string PlantRelativeUrl => "newPlantAPI.do";
+        public string PlantList => "index/getPlantListTitle";
 
-        public string PlantListRelativeUrl => "PlantListAPI.do";
+        public string DevicesByPlantList => "panel/getDevicesByPlantList";
 
-        public string PlantDetailRelativeUrl => "newPlantDetailAPI.do";
+        public string WeatherByPlantId => "index/getWeatherByPlantId";
 
-        public string InverterRelativeUrl => "newInverterAPI.do";
+        public string StorageTotalData => "panel/storage/getStorageTotalData";
+
+        public string PlantData => "panel/getPlantData";
+
+        public string StorageStatusData => "panel/storage/getStorageStatusData";
+
+        public string StorageBatChartData => "panel/storage/getStorageBatChart";
+
+        public string StorageEnergyDayChartData => "panel/storage/getStorageEnergyDayChart";
+
+        public string DeviceInfo => "panel/getDeviceInfo";
 
         /// <summary>
         /// Gets current plant information of all plants.
         /// </summary>
         /// <returns>Current information of all plants</returns>
-        public async Task<PlantList> GetPlantList()
+        public async Task<List<Plant>> GetPlantList()
         {
-            var response = await GetMessageReturnResponse<PlantList>(new Uri(GrowattApiBaseUrl, PlantListRelativeUrl), HttpStatusCode.OK);
+            var response = await GetMessageReturnResponse<List<Plant>>(new Uri(GrowattApiBaseUrl, PlantList), HttpStatusCode.OK);
             return response;
         }
 
         /// <summary>
-        /// Gets inverter Serial numbers and some inverter information data
+        /// Gets devices by plant
         /// </summary>
-        /// <returns>Inverter Serial numbers and some inverter information data</returns>
-        public async Task<NewPlant> GetInverterSerialNumbers(string plantId)
+        /// <returns>Gets devices by plant</returns>
+        public async Task<List<DeviceByPlant>> GetDevicesByPlantList(String plantId)
         {
-            var response = await GetMessageReturnResponse<NewPlant>(new Uri(GrowattApiBaseUrl, $"{PlantRelativeUrl}?op=getAllDeviceListThree&pageNum=1&pageSize=15&plantId={plantId}" ), HttpStatusCode.OK);
+            var content = new FormUrlEncodedContent(new[]
+            {
+                    new KeyValuePair<string, string>("currPage", "1"),
+                    new KeyValuePair<string, string>("plantId", plantId)
+                });
+            var response = await PostMessageReturnResponse<List<DeviceByPlant>>(new Uri(GrowattApiBaseUrl, DevicesByPlantList), content, HttpStatusCode.OK);
             return response;
         }
 
         /// <summary>
-        /// Gets Inverter production data
+        /// Gets storage device info
         /// </summary>
-        /// <returns>Unknown</returns>
-        public async Task<InverterData> GetInverterProductionData(string serialNumber, DateTime date)
+        /// <returns>Gets storage device info</returns>
+        public async Task<DeviceInfoStorage> GetStorageDeviceInfo(String plantId, String sn)
         {
-            var dateString = date.ToString("yyyy-MM-dd");
-            var response = await GetMessageReturnResponse<InverterData>(new Uri(GrowattApiBaseUrl, $"{InverterRelativeUrl}?op=getInverterData&type=1&date={dateString}&id={serialNumber}" ), HttpStatusCode.OK);
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("deviceTypeName", "storage"),
+                new KeyValuePair<string, string>("sn", sn)
+                });
+            var response = await PostMessageReturnResponse<DeviceInfoStorage>(new Uri(GrowattApiBaseUrl, DeviceInfo), content, HttpStatusCode.OK);
             return response;
         }
 
         /// <summary>
-        /// Gets amount of power generated on each half hour of the given day.
+        /// Gets datalog device info
         /// </summary>
-        /// <returns>Amount of power generated on each half hour of the given day.</returns>
-        public async Task<PlantDetailDay> GetPlantDetailDayData(string plantId, DateTime date)
+        /// <returns>Gets datalog device info</returns>
+        public async Task<DeviceInfoDatalog> GetDatalogDeviceInfo(String plantId, String sn)
         {
-            var dateString = date.ToString("yyyy-MM-dd");
-            var response = await GetMessageReturnResponse<PlantDetailDay>(new Uri(GrowattApiBaseUrl, $"{PlantDetailRelativeUrl}?plantId={plantId}&type=1&date={dateString}"), HttpStatusCode.OK);
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("deviceTypeName", "datalog"),
+                new KeyValuePair<string, string>("sn", sn)
+                });
+            var response = await PostMessageReturnResponse<DeviceInfoDatalog>(new Uri(GrowattApiBaseUrl, DeviceInfo), content, HttpStatusCode.OK);
             return response;
         }
 
         /// <summary>
-        /// Gets amount of power generated for each day of the given month.
+        /// Gets weather by plant
         /// </summary>
-        /// <returns>Amount of power generated for each day of the given month.</returns>
-        public async Task<PlantDetailMonth> GetPlantDetailMonthData(string plantId, DateTime date)
+        /// <returns>Gets weather by plant</returns>
+        public async Task<Weather> GetWeatherByPlant(String plantId)
         {
-            var dateString = date.ToString("yyyy-MM");
-            var response = await GetMessageReturnResponse<PlantDetailMonth>(new Uri(GrowattApiBaseUrl, $"{PlantDetailRelativeUrl}?plantId={plantId}&type=2&date={dateString}"), HttpStatusCode.OK);
-            response.Data = response.Data.ToDictionary(o => new DateTime(date.Year, date.Month, o.Key.Day), o => o.Value);
+            var response = await PostMessageReturnResponse<Weather>(new Uri(GrowattApiBaseUrl, WeatherByPlantId + $"?plantId={plantId}"), new StringContent(""), HttpStatusCode.OK);
             return response;
         }
 
         /// <summary>
-        /// Gets amount of power generated for each month of the given year.
+        /// Gets total storage data by plant, inverter
         /// </summary>
-        /// <returns>Amount of power generated for each month of the given year.</returns>
-        public async Task<PlantDetailYear> GetPlantDetailYearData(string plantId, DateTime date)
+        /// <returns>Gets total storage data by plant, inverter</returns>
+        public async Task<StorageTotalData> GetStorageTotalDataByPlant(String plantId, String storageSn)
         {
-            var response = await GetMessageReturnResponse<PlantDetailYear>(new Uri(GrowattApiBaseUrl, $"{PlantDetailRelativeUrl}?plantId={plantId}&type=3&date={date.Year}"), HttpStatusCode.OK);
-            response.Data = response.Data.ToDictionary(o => new DateTime(date.Year, o.Key.Month, date.Day), o => o.Value);
+            var content = new FormUrlEncodedContent(new[]
+            {
+                    new KeyValuePair<string, string>("storageSn", storageSn)
+                });
+            var response = await PostMessageReturnResponse<StorageTotalData>(new Uri(GrowattApiBaseUrl, StorageTotalData + $"?plantId={plantId}"), content, HttpStatusCode.OK);
             return response;
         }
 
         /// <summary>
-        /// Gets amount of power generated for each year
+        /// Gets data for plant
         /// </summary>
-        /// <returns>Amount of genereted power for each year</returns>
-        public async Task<PlantDetailTotal> GetPlantDetailTotalData(string plantId)
+        /// <returns>Gets data for plant</returns>
+        public async Task<PlantData> GetPlantData(String plantId)
         {
-            var response = await GetMessageReturnResponse<PlantDetailTotal>(new Uri(GrowattApiBaseUrl, $"{PlantDetailRelativeUrl}?plantId={plantId}&type=4"), HttpStatusCode.OK);
+            var response = await PostMessageReturnResponse<PlantData>(new Uri(GrowattApiBaseUrl, PlantData + $"?plantId={plantId}"), new StringContent(""), HttpStatusCode.OK);
             return response;
         }
 
         /// <summary>
-        /// Gets information about the user currently logged on and some login information
+        /// Gets status storage data by plant, inverter
         /// </summary>
-        /// <returns>Information about the current user</returns>
-        public async Task<LoginInfo> GetUserData()
+        /// <returns>Gets status storage data by plant, inverter</returns>
+        public async Task<StorageStatusData> GetStorageStatusDataByPlant(String plantId, String storageSn)
         {
-            return await GetNewSession();
+            var content = new FormUrlEncodedContent(new[]
+            {
+                    new KeyValuePair<string, string>("storageSn", storageSn)
+                });
+            var response = await PostMessageReturnResponse<StorageStatusData>(new Uri(GrowattApiBaseUrl, StorageStatusData + $"?plantId={plantId}"), content, HttpStatusCode.OK);
+            return response;
+        }
+
+        /// <summary>
+        /// Gets storage battery chart data
+        /// </summary>
+        /// <returns>Gets storage battery chart data</returns>
+        public async Task<StorageBatChartData> GetStorageBatChart(String plantId, String storageSn)
+        {
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("storageSn", storageSn)
+            });
+            var response = await PostMessageReturnResponse<StorageBatChartData>(new Uri(GrowattApiBaseUrl, StorageBatChartData), content, HttpStatusCode.OK);
+            return response;
+        }
+
+        /// <summary>
+        /// Gets storage battery chart data
+        /// </summary>
+        /// <returns>Gets storage battery chart data</returns>
+        public async Task<StorageEnergyDayChart> GetStorageEnergyDayChart(String plantId, String storageSn, DateTime date)
+        {
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("date", date.ToString("yyyy-MM-dd")),
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("storageSn", storageSn)
+            });
+            var response = await PostMessageReturnResponse<StorageEnergyDayChart>(new Uri(GrowattApiBaseUrl, StorageEnergyDayChartData), content, HttpStatusCode.OK);
+            return response;
         }
     }
 }
