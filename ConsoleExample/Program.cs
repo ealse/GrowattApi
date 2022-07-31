@@ -1,11 +1,17 @@
 ﻿using Ealse.Growatt.Api;
 using Ealse.Growatt.Api.Helpers;
-using System.Text.Json;
 
-var session = new Session("", "");
+// Inser your own information
+var UserHasStorageDevice = false;
+var session = new Session("username", "password");
 
 var plants = await session.GetPlantList();
 var plant = plants[0];
+
+var allPlantDataPerHourForGivenDay = await session.GetPlantDetailDayData(plant.Id, DateTime.Now);
+var allPlantDataPerMonthForGivenYear = await session.GetPlantDetailYearData(plant.Id, DateTime.Now);
+var allPlantDataPerDayForGivenMonth = await session.GetPlantDetailMonthData(plant.Id, DateTime.Now);
+var allPlantDataPerYear = await session.GetPlantDetailTotalData(plant.Id);
 
 if (plants != null && plant != null && plant.Id != null)
 {
@@ -25,7 +31,6 @@ if (plants != null && plant != null && plant.Id != null)
 
     var devices = await session.GetDevicesByPlantList(plant.Id);
     var device = devices[0];
-    var storageDevice = await session.GetStorageDeviceInfo(plant.Id, device.Sn);
     var dataLoggerDevice = await session.GetDatalogDeviceInfo(plant.Id, device.DatalogSn);
     var utcDateTime = DateTime.Parse(device.TimeServer).AddHours(-8);
     var localDateTime = utcDateTime.AddHours(int.Parse(device.Timezone));
@@ -62,8 +67,7 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("--------------------------------");
     Console.WriteLine("");
 
-
-    if (devices != null && devices != null && device.Sn != null)
+    if (devices != null && devices != null && device.Sn != null && UserHasStorageDevice)
     {
         var totalStorageData = await session.GetStorageTotalDataByPlant(plant.Id, device.Sn);
 
@@ -119,7 +123,7 @@ if (plants != null && plant != null && plant.Id != null)
         Console.WriteLine("-------------------");
         Console.WriteLine("");
 
-        var statusBatChartData = await session.GetStorageBatChart(plant.Id, device.Sn);
+        var statusBatChartData = await session.GetStorageBatChartData(plant.Id, device.Sn);
 
         Console.WriteLine("----- Battery Information -------");
 
@@ -163,10 +167,7 @@ if (plants != null && plant != null && plant.Id != null)
         }      
 
         Console.WriteLine("--------------------------------");
-        Console.WriteLine("");
-
-        
-       
+        Console.WriteLine("");    
     }       
     
 }

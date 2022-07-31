@@ -12,7 +12,6 @@ namespace Ealse.Growatt.Api.Models
 
         [JsonPropertyName("interval")]
         public string Interval { get; set; }
-
         
         [JsonPropertyName("deviceType")]
         public string DeviceType { get; set; }

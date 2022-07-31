@@ -15,6 +15,5 @@ namespace Ealse.Growatt.Api.Models
 
         [JsonPropertyName("now")]
         public WeatherNow Now { get; set; }
-
     }
 }

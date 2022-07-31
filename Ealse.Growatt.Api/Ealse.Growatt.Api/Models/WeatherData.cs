@@ -7,6 +7,5 @@ namespace Ealse.Growatt.Api.Models
     {
         [JsonPropertyName("HeWeather6")]
         public List<WeatherHeData> WeatherList { get; set; }
-
     }
 }

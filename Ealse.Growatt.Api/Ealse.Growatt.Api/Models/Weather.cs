@@ -18,6 +18,5 @@ namespace Ealse.Growatt.Api.Models
 
         [JsonPropertyName("radiant")]
         public string Radiant { get; set; }
-
     }
 }

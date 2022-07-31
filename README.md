@@ -3,17 +3,19 @@ API in .NET Standard 2.0 to communicate with a Growatt server for retrieving dat
 
 ## Version History
 
-0.1 - released September 28, 2019 by ealse
+0.1 - Released September 28, 2019 by ealse
 
 - Initial version
 
-0.2 - released March 15, 2022
+0.2 - Needs some testing
 
+Thanks to jpvdm1:
 - Changed the login method (NOTE: I have an installer account and thus the login method might not work for you.)
 - Added new methods
-- Added a console example to show usage. (NOTE: I have a storage inverter device and thus some of the methods might not work for you. I'm using Dotnet 6 to build and run the console example.)
-- Kudos to ealse for this great project and providing the required foundation for me to make the required changes.
-- I haven't pushed this version to nuget as I believe this version is quite beta. 
+- Added a console example to show usage
+
+- Updated exsting methods to new Growatt api calls
+- Added possibility for changing api urls
 
 ## Console Example output
 ```
