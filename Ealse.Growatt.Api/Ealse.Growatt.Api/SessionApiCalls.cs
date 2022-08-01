@@ -14,6 +14,7 @@ namespace Ealse.Growatt.Api
         public string InverterEnergyDataYearUrl { get; set; } = "panel/inv/getInvYearChart";
         public string InverterEnergyDataMonthUrl { get; set; } = "panel/inv/getInvMonthChart";
         public string InverterEnergyDataDayUrl { get; set; } = "panel/inv/getInvDayChart";
+        public string InverterEnergyDataDayChartUrl { get; set; } = "energy/compare/getDevicesDayChart";
         public string DevicesByPlantList { get; set; } = "panel/getDevicesByPlantList";
         public string WeatherByPlantId { get; set; } = "index/getWeatherByPlantId";
         public string StorageTotalData { get; set; } = "panel/storage/getStorageTotalData";
@@ -93,6 +94,21 @@ namespace Ealse.Growatt.Api
                 });
 
             return await GetPostResponseData<List<Nullable<double>>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataDayUrl), "obj.pac");
+        }
+
+        /// <summary>
+        /// Gets amount of power generated for each 5 minutes of the given day.
+        /// </summary>
+        /// <returns>Amount of power generated for each 5 minutes of the given day.</returns>
+        public async Task<List<Nullable<double>>> GetPlantDetailDayChartData(string plantId, DateTime date)
+        {
+            var content = new FormUrlEncodedContent(new[]{
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("date", date.ToString("yyyy-MM-dd")),
+                new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"plant\",\"sn\":\"{plantId}\",\"params\":\"pac\"}}]"),
+            });
+
+            return await GetPostResponseData<List<Nullable<double>>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataDayChartUrl), "obj.0.datas.pac");
         }
 
         /// <summary>

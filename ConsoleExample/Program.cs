@@ -1,5 +1,6 @@
 ﻿using Ealse.Growatt.Api;
 using Ealse.Growatt.Api.Helpers;
+using Ealse.Growatt.Api.Models;
 
 // Insert your own information
 var userHasStorageDevice = false;
@@ -7,6 +8,8 @@ var session = new Session("username", "password");
 
 var plants = await session.GetPlantList();
 var plant = plants[0];
+
+var PlantDetailDayChartData = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now);
 
 var tableAlignment = "{0,-40}{1}";
 
