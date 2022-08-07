@@ -1,23 +1,23 @@
 # Growatt API
-API in .NET Standard 2.0 to communicate with a Growatt server for retrieving data on solar panels
+API in .NET Standard 2.0 to communicate with a Growatt server for retrieving data on solar panels and storage devices. It is device dependent, so not all methods may work for every device type. The example project shows most of the methods that can be called.
+
+Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 
 ## Version History
 
-0.1 - Released September 28, 2019 by ealse
+0.1 - Released September 28, 2019 - by ealse
 
 - Initial version
 
-0.2 - Needs some testing
+0.2 - Released August 7, 2022 - by jpvdm1 and ealse
 
-Thanks to jpvdm1:
-- Changed the login method (NOTE: I have an installer account and thus the login method might not work for you.)
-- Added new methods
+- Changed login method
+- Added new methods for storage and getting inverter data.
 - Added a console example to show usage
-
 - Updated exsting methods to new Growatt api calls
 - Added possibility for changing api urls
 
-## Console Example output
+## Console Example output (example)
 ```
 ----- Weather -------
 - City: ABCDEFGHJ

@@ -1,12 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Ealse.Growatt.Api</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNamespace>Ealse.Growatt.Api</RootNamespace>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/ealse/GrowattApi</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/ealse/GrowattApi</RepositoryUrl>
+		<PackageReleaseNotes>https://github.com/ealse/GrowattApi/blob/master/README.md</PackageReleaseNotes>
+		<Version>0.2.0</Version>
+		<Authors>ealse</Authors>
+		<Description>
+			API in .NET Standard 2.0 to communicate with a Growatt server for retrieving data on solar panels and storage devices.
+		</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Text.Json" Version="4.6.0" />
+	</ItemGroup>
 
 </Project>

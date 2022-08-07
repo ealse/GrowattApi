@@ -9,8 +9,6 @@ var session = new Session("username", "password");
 var plants = await session.GetPlantList();
 var plant = plants[0];
 
-var PlantDetailDayChartData = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now);
-
 var tableAlignment = "{0,-40}{1}";
 
 if (plants != null && plant != null && plant.Id != null)
@@ -29,21 +27,23 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("---------------------");
     Console.WriteLine("");
 
-    var allPlantDataForGivenDay = await session.GetPlantDetailDayData(plant.Id, DateTime.Now);
-    var allPlantDataPerDayForGivenMonth = await session.GetPlantDetailMonthData(plant.Id, DateTime.Now);
-    var allPlantDataPerMonthForGivenYear = await session.GetPlantDetailYearData(plant.Id, DateTime.Now);
-    var allPlantDataPerYear = await session.GetPlantDetailTotalData(plant.Id);
+    var devices = await session.GetDevicesByPlantList(plant.Id);
+    var device = devices[0];
+    var allPlantDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now);
+    var allPlantVoltageDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now, serialNumber: device.Sn, param: InverterPlantParameters.Voltage.Mppt1);
+    var allPlantDataPerDayForGivenMonth = await session.GetPlantDetailMonthChartData(plant.Id, DateTime.Now);
+    var allPlantDataPerMonthForGivenYear = await session.GetPlantDetailYearChartData(plant.Id, DateTime.Now);
+    var allPlantDataPerYear = await session.GetPlantDetailTotalChartData(plant.Id);
 
     Console.WriteLine("----- My Solar Panel Information -------");
     Console.WriteLine(tableAlignment, "- Today at 13:45:", $"{allPlantDataForGivenDay[(13 * 60 + 45) / 5]} W");
+    Console.WriteLine(tableAlignment, "- Today at 13:45:", $"{allPlantVoltageDataForGivenDay[(13 * 60 + 45) / 5]} Voltage");
     Console.WriteLine(tableAlignment, $"- {DateTime.Now:yyyy-MM-01}:", $"{allPlantDataPerDayForGivenMonth[0]} kWh");
     Console.WriteLine(tableAlignment, $"- {DateTime.Now:yyyy-MM}:", $"{allPlantDataPerMonthForGivenYear[DateTime.Now.Month - 1]} kWh");
     Console.WriteLine(tableAlignment, $"- {DateTime.Now:yyyy}:", $"{allPlantDataPerYear.Last()} kWh");
     Console.WriteLine("----------------------------------------");
     Console.WriteLine("");
 
-    var devices = await session.GetDevicesByPlantList(plant.Id);
-    var device = devices[0];
     var dataLoggerDevice = await session.GetDatalogDeviceInfo(plant.Id, device.DatalogSn);
     var utcDateTime = DateTime.Parse(device.TimeServer).AddHours(-8);
     var localDateTime = utcDateTime.AddHours(int.Parse(device.Timezone));

@@ -15,6 +15,9 @@ namespace Ealse.Growatt.Api
         public string InverterEnergyDataMonthUrl { get; set; } = "panel/inv/getInvMonthChart";
         public string InverterEnergyDataDayUrl { get; set; } = "panel/inv/getInvDayChart";
         public string InverterEnergyDataDayChartUrl { get; set; } = "energy/compare/getDevicesDayChart";
+        public string InverterEnergyDataMonthChartUrl { get; set; } = "energy/compare/getDevicesMonthChart";
+        public string InverterEnergyDataYearChartUrl { get; set; } = "energy/compare/getDevicesYearChart";
+        public string InverterEnergyDataTotalChartUrl { get; set; } = "energy/compare/getDevicesTotalChart";
         public string DevicesByPlantList { get; set; } = "panel/getDevicesByPlantList";
         public string WeatherByPlantId { get; set; } = "index/getWeatherByPlantId";
         public string StorageTotalData { get; set; } = "panel/storage/getStorageTotalData";
@@ -97,21 +100,6 @@ namespace Ealse.Growatt.Api
         }
 
         /// <summary>
-        /// Gets amount of power generated for each 5 minutes of the given day.
-        /// </summary>
-        /// <returns>Amount of power generated for each 5 minutes of the given day.</returns>
-        public async Task<List<Nullable<double>>> GetPlantDetailDayChartData(string plantId, DateTime date)
-        {
-            var content = new FormUrlEncodedContent(new[]{
-                new KeyValuePair<string, string>("plantId", plantId),
-                new KeyValuePair<string, string>("date", date.ToString("yyyy-MM-dd")),
-                new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"plant\",\"sn\":\"{plantId}\",\"params\":\"pac\"}}]"),
-            });
-
-            return await GetPostResponseData<List<Nullable<double>>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataDayChartUrl), "obj.0.datas.pac");
-        }
-
-        /// <summary>
         /// Gets amount of power generated for each day of the given month.
         /// </summary>
         /// <returns>Amount of power generated for each day of the given month.</returns>
@@ -156,6 +144,78 @@ namespace Ealse.Growatt.Api
             return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataTotalUrl), "obj.energy");
         }
 
+
+        /// <summary>
+        /// Gets amount of power generated for each 5 minutes of the given day.
+        /// </summary>
+        /// <returns>Amount of power generated for each 5 minutes of the given day.</returns>
+        public async Task<List<Nullable<double>>> GetPlantDetailDayChartData(string plantId, DateTime date, string serialNumber = null, string param = InverterPlantParameters.Power.Pac)
+        {
+            var jsonDataType = string.IsNullOrEmpty(serialNumber) ? "plant" : "inv";
+            var sn = serialNumber ?? plantId;
+            var content = new FormUrlEncodedContent(new[]{
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("date", date.ToString("yyyy-MM-dd")),
+                new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
+            });
+
+            return await GetPostResponseData<List<Nullable<double>>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataDayChartUrl), $"obj.0.datas.{param}");
+        }
+
+        /// <summary>
+        /// Gets amount of power generated for each day of the given month.
+        /// </summary>
+        /// <returns>Amount of power generated for each day of the given month.</returns>
+        public async Task<List<double>> GetPlantDetailMonthChartData(string plantId, DateTime date, string serialNumber = null, string type = null, string param = "energy")
+        {
+            var jsonDataType = type is null ? string.IsNullOrEmpty(serialNumber) ? "plant" : "inv" : type;
+            var sn = type is null && serialNumber != null ? serialNumber : plantId;
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("date", date.ToString("yyyy-MM")),
+                new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
+                });
+
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataMonthChartUrl), $"obj.0.datas.{param}");
+        }
+
+        /// <summary>
+        /// Gets amount of power generated for each month of the given year.
+        /// </summary>
+        /// <returns>Amount of power generated for each month of the given year.</returns>
+        public async Task<List<double>> GetPlantDetailYearChartData(string plantId, DateTime date, string serialNumber = null, string type = null, string param = "energy")
+        {
+            var jsonDataType = type is null ? string.IsNullOrEmpty(serialNumber) ? "plant" : "inv" : type;
+            var sn = type is null && serialNumber != null ? serialNumber : plantId;
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("year", date.ToString("yyyy")),
+                new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
+            });
+
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataYearChartUrl), $"obj.0.datas.{param}");
+        }
+
+        /// <summary>
+        /// Gets amount of power generated for each year
+        /// </summary>
+        /// <returns>Amount of genereted power for each year</returns>
+        public async Task<List<double>> GetPlantDetailTotalChartData(string plantId, string serialNumber = null, string type = null, string param = "energy")
+        {
+            var jsonDataType = type is null ? string.IsNullOrEmpty(serialNumber) ? "plant" : "inv" : type;
+            var sn = type is null && serialNumber != null ? serialNumber : plantId;
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("plantId", plantId),
+                new KeyValuePair<string, string>("year", DateTime.Now.ToString("yyyy")),
+                new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
+            });
+
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataTotalChartUrl), $"obj.0.datas.{param}");
+        }
+
         /// <summary>
         /// Gets storage device info
         /// </summary>
@@ -167,7 +227,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("plantId", plantId),
                 new KeyValuePair<string, string>("deviceTypeName", "storage"),
                 new KeyValuePair<string, string>("sn", sn)
-                });
+            });
 
             return await GetPostResponseData<DeviceInfoStorage>(content, new Uri(GrowattApiBaseUrl, DeviceInfo), "obj");
         }
@@ -178,11 +238,7 @@ namespace Ealse.Growatt.Api
         /// <returns>Gets total storage data by plant, inverter</returns>
         public async Task<StorageTotalData> GetStorageTotalDataByPlant(string plantId, string storageSn)
         {
-            var content = new FormUrlEncodedContent(new[]
-            {
-                    new KeyValuePair<string, string>("storageSn", storageSn)
-                });
-
+            var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSn) });
             return await GetPostResponseData<StorageTotalData>(content, new Uri(GrowattApiBaseUrl, StorageTotalData + $"?plantId={plantId}"), "obj.datas");
         }
 
@@ -192,11 +248,7 @@ namespace Ealse.Growatt.Api
         /// <returns>Gets status storage data by plant, inverter</returns>
         public async Task<StorageStatusData> GetStorageStatusDataByPlant(String plantId, String storageSn)
         {
-            var content = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("storageSn", storageSn)
-             });
-
+            var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSn) });
             return await GetPostResponseData<StorageStatusData>(content, new Uri(GrowattApiBaseUrl, StorageStatusData + $"?plantId={plantId}"), "obj");
         }
 
