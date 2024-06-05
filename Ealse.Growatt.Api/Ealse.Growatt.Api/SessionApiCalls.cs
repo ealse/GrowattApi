@@ -26,6 +26,7 @@ namespace Ealse.Growatt.Api
         public string StorageBatChartData { get; set; } = "panel/storage/getStorageBatChart";
         public string StorageEnergyDayChartData { get; set; } = "panel/storage/getStorageEnergyDayChart";
         public string DeviceInfo { get; set; } = "panel/getDeviceInfo";
+        public string TcpSet { get; set; } = "tcpSet.do";
 
         /// <summary>
         /// Gets current plant information of all plants.
@@ -281,6 +282,28 @@ namespace Ealse.Growatt.Api
             });
 
             return await GetPostResponseData<StorageEnergyDayChart>(content, new Uri(GrowattApiBaseUrl, StorageEnergyDayChartData), "obj");
+        }
+        
+        
+        /// <summary>
+        /// Sets setting of plant
+        /// </summary>
+        /// <returns>Result of type SetSettingResponse</returns>
+        public async Task<SetSettingResponse> PostSetting(string action, string serialNumber, string type, string[] parameters)
+        {
+            var formDictionary = new Dictionary<string, string>
+            {
+                { "action", action },
+                { "serialNum", serialNumber },
+                { "type", type }
+            };
+            
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                formDictionary.Add($"param{i+1}", parameters[i]);
+            }
+            
+            return await GetPostResponseData<SetSettingResponse>(new FormUrlEncodedContent(formDictionary), new Uri(GrowattApiBaseUrl, TcpSet), "");
         }
     }
 }
