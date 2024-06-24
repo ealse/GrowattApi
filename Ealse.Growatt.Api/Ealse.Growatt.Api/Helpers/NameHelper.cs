@@ -2,7 +2,7 @@ namespace Ealse.Growatt.Api.Helpers
 {
     public static class NameHelper
     {
-        public static string getSimSignalText(string rawName)
+        public static string GetSimSignalText(string rawName)
         {
             if (rawName == "modelText")
                 return "Mode"; //模式

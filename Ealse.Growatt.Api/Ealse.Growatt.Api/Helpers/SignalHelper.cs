@@ -2,9 +2,10 @@ namespace Ealse.Growatt.Api.Helpers
 {
     public static class SignalHelper
     {
-        public static string getSimSignalText(int simSignal, string deviceTypeIndicate)
+        public static string GetSimSignalText(int simSignal, string deviceTypeIndicate)
         {
             string signalText;
+
             if (deviceTypeIndicate == "11" || deviceTypeIndicate == "16")
             {
                 if (simSignal <= 0 && simSignal >= -50)

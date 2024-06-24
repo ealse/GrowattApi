@@ -30,7 +30,7 @@ if (plants != null && plant != null && plant.Id != null)
     var devices = await session.GetDevicesByPlantList(plant.Id);
     var device = devices[0];
     var allPlantDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now);
-    var allPlantVoltageDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now, serialNumber: device.Sn, param: InverterPlantParameters.Voltage.Mppt1);
+    var allPlantVoltageDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now, serialNumber: device.SerialNumber, param: InverterPlantParameters.Voltage.Mppt1);
     var allPlantDataPerDayForGivenMonth = await session.GetPlantDetailMonthChartData(plant.Id, DateTime.Now);
     var allPlantDataPerMonthForGivenYear = await session.GetPlantDetailYearChartData(plant.Id, DateTime.Now);
     var allPlantDataPerYear = await session.GetPlantDetailTotalChartData(plant.Id);
@@ -44,28 +44,28 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("----------------------------------------");
     Console.WriteLine("");
 
-    var dataLoggerDevice = await session.GetDatalogDeviceInfo(plant.Id, device.DatalogSn);
+    var dataLoggerDevice = await session.GetDataLoggerDeviceInfo(plant.Id, device.DataLoggerSerialNumber);
     var utcDateTime = DateTime.Parse(device.TimeServer).AddHours(-8);
-    var localDateTime = utcDateTime.AddHours(double.Parse(device.Timezone));
-    var deviceStatus = StatusHelper.getDeviceTypeStatus(device);
+    var localDateTime = utcDateTime.AddHours(double.Parse(device.TimeZone));
+    var deviceStatus = StatusHelper.GetDeviceTypeStatus(device);
 
     Console.WriteLine("----- My Photovoltaic Devices -------");
-    Console.WriteLine(tableAlignment, "- Device Serial Number:", $"{device.Sn}");
+    Console.WriteLine(tableAlignment, "- Device Serial Number:", $"{device.SerialNumber}");
     Console.WriteLine(tableAlignment, "- User Name:", $"{device.AccountName}");
-    Console.WriteLine(tableAlignment, "- Today(kWh):", $"{device.EToday}");
+    Console.WriteLine(tableAlignment, "- Today (kWh):", $"{device.EnergyToday}");
     Console.WriteLine(tableAlignment, "- Status:", $"{deviceStatus}");
     Console.WriteLine(tableAlignment, "- Plant Name:", $"{device.PlantName}");
-    Console.WriteLine(tableAlignment, "- This Month(kWh):", $"{device.EMonth}");
+    Console.WriteLine(tableAlignment, "- This Month(kWh):", $"{device.EnergyMonth}");
     Console.WriteLine(tableAlignment, "- Server Update Time:", $"{DateTime.Parse(device.TimeServer):yyyy-MM-dd HH:mm:ss}"); // Server Time zone is China (UTC+8)
     Console.WriteLine(tableAlignment, "- UTC Update Time:", $"{utcDateTime:yyyy-MM-dd HH:mm:ss}");
     Console.WriteLine(tableAlignment, "- Local Update Time:", $"{localDateTime:yyyy-MM-dd HH:mm:ss}");
-    Console.WriteLine(tableAlignment, "- Data Logger:", $"{device.DatalogSn}");
-    Console.WriteLine(tableAlignment, "----- Signal:", $"{SignalHelper.getSimSignalText(int.Parse(dataLoggerDevice.SimSignal), dataLoggerDevice.DeviceTypeIndicate)}");
-    Console.WriteLine(tableAlignment, "----- Collector Model:", $"{device.DatalogTypeTest}");
+    Console.WriteLine(tableAlignment, "- Data Logger:", $"{device.DataLoggerSerialNumber}");
+    Console.WriteLine(tableAlignment, "----- Signal:", $"{SignalHelper.GetSimSignalText(int.Parse(dataLoggerDevice.SimSignal), dataLoggerDevice.DeviceTypeIndicate)}");
+    Console.WriteLine(tableAlignment, "----- Collector Model:", $"{device.DataLoggerTypeTest}");
     Console.WriteLine(tableAlignment, "----- Firmware Version:", $"{dataLoggerDevice.FirmwareVersion}");
     Console.WriteLine(tableAlignment, "----- Ip & Port:", $"{dataLoggerDevice.IpAndPort}");
     Console.WriteLine(tableAlignment, "----- Data Update Interval:", $"{dataLoggerDevice.Interval} Minute");
-    Console.WriteLine(tableAlignment, "- Total Energy(kWh):", $"{device.ETotal}");
+    Console.WriteLine(tableAlignment, "- Total Energy(kWh):", $"{device.EnergyTotal}");
     Console.WriteLine(tableAlignment, "- Rated Power(W):", $"{device.NominalPower}");
     Console.WriteLine(tableAlignment, "- Current Power(W):", $"{device.Pac}");
     Console.WriteLine("-------------------");
@@ -80,9 +80,9 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("--------------------------------");
     Console.WriteLine("");
 
-    if (devices != null && devices != null && device.Sn != null && userHasStorageDevice)
+    if (devices != null && devices != null && device.SerialNumber != null && userHasStorageDevice)
     {
-        var totalStorageData = await session.GetStorageTotalDataByPlant(plant.Id, device.Sn);
+        var totalStorageData = await session.GetStorageTotalDataByPlant(plant.Id, device.SerialNumber);
 
         Console.WriteLine("----- Solar -------");
         Console.WriteLine(tableAlignment, $"- Today:", $"{totalStorageData.EpvToday} kWh");
@@ -110,14 +110,14 @@ if (plants != null && plant != null && plant.Id != null)
         Console.WriteLine("-------------------");
         Console.WriteLine("");
 
-        var statusStorageData = await session.GetStorageStatusDataByPlant(plant.Id, device.Sn);
+        var statusStorageData = await session.GetStorageStatusDataByPlant(plant.Id, device.SerialNumber);
         var deviceType = statusStorageData.DeviceType == "1" ? "Inverter" : (statusStorageData.DeviceType == "2" ? "Mix" : "Storage");
         var isBatteryCharging = int.Parse(statusStorageData.BatPower) < 0;
         var batPower = statusStorageData.BatPower.Replace("-", "");
 
         Console.WriteLine("----- Storage Status -------");
         Console.WriteLine(tableAlignment, "- Device Type:", $"{deviceType}");
-        Console.WriteLine(tableAlignment, "- Device S/N:", $"{device.Sn}");
+        Console.WriteLine(tableAlignment, "- Device S/N:", $"{device.SerialNumber}");
         Console.WriteLine(tableAlignment, "- Data Sources:", $"{deviceStatus}");
         Console.WriteLine(tableAlignment, "- Battery Voltage:", $"{statusStorageData.VBat}");
         Console.WriteLine(tableAlignment, "- PV1/PV2 Voltage:", $"{statusStorageData.VPv1}/{statusStorageData.VPv2} V");
@@ -136,7 +136,7 @@ if (plants != null && plant != null && plant.Id != null)
         Console.WriteLine("-------------------");
         Console.WriteLine("");
 
-        var statusBatChartData = await session.GetStorageBatChartData(plant.Id, device.Sn);
+        var statusBatChartData = await session.GetStorageBatChartData(plant.Id, device.SerialNumber);
 
         Console.WriteLine("----- Battery Information -------");
 
@@ -163,7 +163,7 @@ if (plants != null && plant != null && plant.Id != null)
         Console.WriteLine("--------------------------------");
         Console.WriteLine("");
 
-        var statusEnergyDayChartData = await session.GetStorageEnergyDayChart(plant.Id, device.Sn, DateTime.Now);
+        var statusEnergyDayChartData = await session.GetStorageEnergyDayChart(plant.Id, device.SerialNumber, DateTime.Now);
 
         Console.WriteLine("----- Energy Trend -------");
         Console.WriteLine($"---- Charge {statusEnergyDayChartData.EChargeTotal} kWh : Solar Storage {statusEnergyDayChartData.ECharge} kWh / Grid Storage {statusEnergyDayChartData.EAcCharge} kWh");

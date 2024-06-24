@@ -17,9 +17,9 @@ namespace Ealse.Growatt.Api.Models
         public string ModelText { get; set; }
 
         [JsonPropertyName("sn")]
-        public string Sn { get; set; }
+        public string SerialNumber { get; set; }
 
         [JsonPropertyName("storagedeviceType")]
-        public string StoragedeviceType { get; set; }
+        public string StorageDeviceType { get; set; }
     }
 }

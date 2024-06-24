@@ -11,6 +11,6 @@ namespace Ealse.Growatt.Api.Models
         public string PlantName { get; set; }
 
         [JsonPropertyName("timezone")]
-        public string Timezone { get; set; }
+        public string TimeZone { get; set; }
     }
 }

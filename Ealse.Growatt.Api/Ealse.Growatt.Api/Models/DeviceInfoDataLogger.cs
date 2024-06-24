@@ -2,7 +2,7 @@
 
 namespace Ealse.Growatt.Api.Models
 {
-    public class DeviceInfoDatalog
+    public class DeviceInfoDataLogger
     {
         [JsonPropertyName("deviceType")]
         public string DeviceType { get; set; }
@@ -20,7 +20,7 @@ namespace Ealse.Growatt.Api.Models
         public string IpAndPort { get; set; }
 
         [JsonPropertyName("sn")]
-        public string Sn { get; set; }
+        public string SerialNumber { get; set; }
 
         [JsonPropertyName("simSignal")]
         public string SimSignal { get; set; }

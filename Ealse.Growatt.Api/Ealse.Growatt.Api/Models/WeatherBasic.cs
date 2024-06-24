@@ -29,7 +29,7 @@ namespace Ealse.Growatt.Api.Models
         public string Sunset { get; set; }
 
         [JsonPropertyName("tz")]
-        public string Timezone { get; set; }
+        public string TimeZone { get; set; }
 
         [JsonPropertyName("toDay")]
         public string Today { get; set; }

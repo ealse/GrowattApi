@@ -14,10 +14,10 @@ namespace Ealse.Growatt.Api.Models
         public string BdcStatus { get; set; }
 
         [JsonPropertyName("datalogSn")]
-        public string DatalogSn { get; set; }
+        public string DataLoggerSerialNumber { get; set; }
 
         [JsonPropertyName("datalogTypeTest")]
-        public string DatalogTypeTest { get; set; }
+        public string DataLoggerTypeTest { get; set; }
 
         [JsonPropertyName("deviceModel")]
         public string DeviceModel { get; set; }
@@ -29,13 +29,13 @@ namespace Ealse.Growatt.Api.Models
         public string DeviceTypeName { get; set; }
 
         [JsonPropertyName("eMonth")]
-        public string EMonth { get; set; }
+        public string EnergyMonth { get; set; }
 
         [JsonPropertyName("eToday")]
-        public string EToday { get; set; }
+        public string EnergyToday { get; set; }
 
         [JsonPropertyName("eTotal")]
-        public string ETotal { get; set; }
+        public string EnergyTotal { get; set; }
 
         [JsonPropertyName("lastUpdateTime")]
         public string LastUpdateTime { get; set; }
@@ -56,7 +56,7 @@ namespace Ealse.Growatt.Api.Models
         public string PlantName { get; set; }
 
         [JsonPropertyName("sn")]
-        public string Sn { get; set; }
+        public string SerialNumber { get; set; }
 
         [JsonPropertyName("status")]
         public string Status { get; set; }
@@ -65,6 +65,6 @@ namespace Ealse.Growatt.Api.Models
         public string TimeServer { get; set; }
 
         [JsonPropertyName("timezone")]
-        public string Timezone { get; set; }
+        public string TimeZone { get; set; }
     }
 }

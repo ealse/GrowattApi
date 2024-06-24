@@ -32,27 +32,27 @@ namespace Ealse.Growatt.Api
         /// Gets data logger device information
         /// </summary>
         /// <returns>Data logger device information</returns>
-        public async Task<DeviceInfoDatalog> GetDatalogDeviceInfo(string plantId, string sn)
+        public async Task<DeviceInfoDataLogger> GetDataLoggerDeviceInfo(string plantId, string serialNumber)
         {
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("plantId", plantId),
                 new KeyValuePair<string, string>("deviceTypeName", "datalog"),
-                new KeyValuePair<string, string>("sn", sn)
-                });
+                new KeyValuePair<string, string>("sn", serialNumber)
+            });
 
-            return await GetPostResponseData<DeviceInfoDatalog>(content, new Uri(GrowattApiBaseUrl, DeviceInfo), "obj");
+            return await GetPostResponseData<DeviceInfoDataLogger>(content, new Uri(GrowattApiBaseUrl, DeviceInfo), "obj");
         }
 
         /// <summary>
         /// Gets devices by plant
         /// </summary>
         /// <returns>Devices by plant</returns>
-        public async Task<List<DeviceByPlant>> GetDevicesByPlantList(string plantId)
+        public async Task<List<DeviceByPlant>> GetDevicesByPlantList(string plantId, string currentPage = "1")
         {
             var content = new FormUrlEncodedContent(new[]
             {
-                    new KeyValuePair<string, string>("currPage", "1"),
+                    new KeyValuePair<string, string>("currPage", currentPage),
                     new KeyValuePair<string, string>("plantId", plantId)
             });
 
@@ -212,12 +212,12 @@ namespace Ealse.Growatt.Api
         /// Gets storage battery chart data
         /// </summary>
         /// <returns>Storage battery chart data</returns>
-        public async Task<StorageBatChartData> GetStorageBatChartData(String plantId, String storageSn)
+        public async Task<StorageBatChartData> GetStorageBatChartData(string plantId, string storageSerialNumber)
         {
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("plantId", plantId),
-                new KeyValuePair<string, string>("storageSn", storageSn)
+                new KeyValuePair<string, string>("storageSn", storageSerialNumber)
             });
 
             return await GetPostResponseData<StorageBatChartData>(content, new Uri(GrowattApiBaseUrl, StorageBatChartData), "obj");
@@ -226,14 +226,14 @@ namespace Ealse.Growatt.Api
         /// <summary>
         /// Gets storage device information
         /// </summary>
-        public async Task<DeviceInfoStorage> GetStorageDeviceInfo(String plantId, String sn)
         /// <returns>Storage device information</returns>
+        public async Task<DeviceInfoStorage> GetStorageDeviceInfo(string plantId, string serialNumber)
         {
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("plantId", plantId),
                 new KeyValuePair<string, string>("deviceTypeName", "storage"),
-                new KeyValuePair<string, string>("sn", sn)
+                new KeyValuePair<string, string>("sn", serialNumber)
             });
 
             return await GetPostResponseData<DeviceInfoStorage>(content, new Uri(GrowattApiBaseUrl, DeviceInfo), "obj");
@@ -243,13 +243,13 @@ namespace Ealse.Growatt.Api
         /// Gets storage battery chart data
         /// </summary>
         /// <returns>Storage battery chart data</returns>
-        public async Task<StorageEnergyDayChart> GetStorageEnergyDayChart(String plantId, String storageSn, DateTime date)
+        public async Task<StorageEnergyDayChart> GetStorageEnergyDayChart(string plantId, string storageSerialNumber, DateTime date)
         {
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("date", date.ToString("yyyy-MM-dd")),
                 new KeyValuePair<string, string>("plantId", plantId),
-                new KeyValuePair<string, string>("storageSn", storageSn)
+                new KeyValuePair<string, string>("storageSn", storageSerialNumber)
             });
 
             return await GetPostResponseData<StorageEnergyDayChart>(content, new Uri(GrowattApiBaseUrl, StorageEnergyDayChartData), "obj");
@@ -259,9 +259,9 @@ namespace Ealse.Growatt.Api
         /// Gets status storage data by plant, inverter
         /// </summary>
         /// <returns>Status storage data by plant, inverter</returns>
-        public async Task<StorageStatusData> GetStorageStatusDataByPlant(String plantId, String storageSn)
+        public async Task<StorageStatusData> GetStorageStatusDataByPlant(string plantId, string storageSerialNumber)
         {
-            var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSn) });
+            var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSerialNumber) });
             return await GetPostResponseData<StorageStatusData>(content, new Uri(GrowattApiBaseUrl, StorageStatusData + $"?plantId={plantId}"), "obj");
         }
 
@@ -269,9 +269,9 @@ namespace Ealse.Growatt.Api
         /// Gets total storage data by plant, inverter
         /// </summary>
         /// <returns>Total storage data by plant, inverter</returns>
-        public async Task<StorageTotalData> GetStorageTotalDataByPlant(string plantId, string storageSn)
+        public async Task<StorageTotalData> GetStorageTotalDataByPlant(string plantId, string storageSerialNumber)
         {
-            var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSn) });
+            var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSerialNumber) });
             return await GetPostResponseData<StorageTotalData>(content, new Uri(GrowattApiBaseUrl, StorageTotalData + $"?plantId={plantId}"), "obj.datas");
         }
 

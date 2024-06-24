@@ -20,10 +20,10 @@ namespace Ealse.Growatt.Api.Models
         public string Country { get; set; }
 
         [JsonPropertyName("creatDate")]
-        public string CreatDate { get; set; }
+        public string CreateDate { get; set; }
 
         [JsonPropertyName("eTotal")]
-        public string ETotal { get; set; }
+        public string EnergyTotal { get; set; }
 
         [JsonPropertyName("fixedPowerPrice")]
         public string FixedPowerPrice { get; set; }
@@ -50,7 +50,7 @@ namespace Ealse.Growatt.Api.Models
         public string IsShare { get; set; }
 
         [JsonPropertyName("lng")]
-        public string Langitude { get; set; }
+        public string Longitude { get; set; }
 
         [JsonPropertyName("lat")]
         public string Latitude { get; set; }
@@ -80,7 +80,7 @@ namespace Ealse.Growatt.Api.Models
         public string PlantType { get; set; }
 
         [JsonPropertyName("timezone")]
-        public string Timezone { get; set; }
+        public string TimeZone { get; set; }
 
         [JsonPropertyName("tree")]
         public string Tree { get; set; }
