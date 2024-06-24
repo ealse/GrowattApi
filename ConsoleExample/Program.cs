@@ -46,7 +46,7 @@ if (plants != null && plant != null && plant.Id != null)
 
     var dataLoggerDevice = await session.GetDatalogDeviceInfo(plant.Id, device.DatalogSn);
     var utcDateTime = DateTime.Parse(device.TimeServer).AddHours(-8);
-    var localDateTime = utcDateTime.AddHours(int.Parse(device.Timezone));
+    var localDateTime = utcDateTime.AddHours(double.Parse(device.Timezone));
     var deviceStatus = StatusHelper.getDeviceTypeStatus(device);
 
     Console.WriteLine("----- My Photovoltaic Devices -------");
