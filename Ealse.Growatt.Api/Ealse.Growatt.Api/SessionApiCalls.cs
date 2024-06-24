@@ -18,6 +18,7 @@ namespace Ealse.Growatt.Api
         public string InverterEnergyDataTotalUrl { get; set; } = "panel/inv/getInvTotalChart";
         public string InverterEnergyDataYearChartUrl { get; set; } = "energy/compare/getDevicesYearChart";
         public string InverterEnergyDataYearUrl { get; set; } = "panel/inv/getInvYearChart";
+        public string InverterTotalsPath { get; set; } = "panel/inv/getInvTotalData";
         public string LoginRelativeUrl { get; set; } = "login";
         public string PlantData { get; set; } = "panel/getPlantData";
         public string PlantList { get; set; } = "index/getPlantListTitle";
@@ -206,6 +207,15 @@ namespace Ealse.Growatt.Api
         public async Task<List<Plant>> GetPlantList()
         {
             return await GetResponseData<List<Plant>>(new Uri(GrowattApiBaseUrl, PlantList), string.Empty);
+        }
+
+        /// <summary>
+        /// Gets total of money and energy since the plant is created
+        /// </summary>
+        /// <returns>Gets data for plant</returns>
+        public async Task<PlantDataTotals> GetPlantTotals(string plantId)
+        {
+            return await GetPostResponseData<PlantDataTotals>(new StringContent(string.Empty), new Uri(GrowattApiBaseUrl, InverterTotalsPath + $"?plantId={plantId}"), "obj");
         }
 
         /// <summary>

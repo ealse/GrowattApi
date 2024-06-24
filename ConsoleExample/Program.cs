@@ -51,6 +51,7 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("");
 
     var dataLoggerDevice = await session.GetDataLoggerDeviceInfo(plant.Id, device.DataLoggerSerialNumber);
+    var plantTotals = await session.GetPlantTotals(plant.Id);
     var utcDateTime = DateTime.Parse(device.TimeServer).AddHours(-8);
     var localDateTime = utcDateTime.AddHours(double.Parse(device.TimeZone));
     var deviceStatus = StatusHelper.GetDeviceTypeStatus(device);
@@ -59,6 +60,7 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine(tableAlignment, "- Device Serial Number:", $"{device.SerialNumber}");
     Console.WriteLine(tableAlignment, "- User Name:", $"{device.AccountName}");
     Console.WriteLine(tableAlignment, "- Today (kWh):", $"{device.EnergyToday}");
+    Console.WriteLine(tableAlignment, $"- Today ({plantTotals.MoneyUnitText}):", $"{plantTotals.MoneyToday}");
     Console.WriteLine(tableAlignment, "- Status:", $"{deviceStatus}");
     Console.WriteLine(tableAlignment, "- Plant Name:", $"{device.PlantName}");
     Console.WriteLine(tableAlignment, "- This Month(kWh):", $"{device.EnergyMonth}");
