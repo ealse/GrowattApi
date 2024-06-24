@@ -9,29 +9,6 @@ namespace Ealse.Growatt.Api
 {
     public partial class Session : IDisposable
     {
-        public string DataLoggerDeviceList { get; set; } = "device/getDatalogList";
-        public string DeviceInfo { get; set; } = "panel/getDeviceInfo";
-        public string DevicesByPlantList { get; set; } = "panel/getDevicesByPlantList";
-        public string PlantFaultLog { get; set; } = "log/getNewPlantFaultLog";
-        public string InverterEnergyDataDayChartUrl { get; set; } = "energy/compare/getDevicesDayChart";
-        public string InverterEnergyDataDayUrl { get; set; } = "panel/inv/getInvDayChart";
-        public string InverterEnergyDataMonthChartUrl { get; set; } = "energy/compare/getDevicesMonthChart";
-        public string InverterEnergyDataMonthUrl { get; set; } = "panel/inv/getInvMonthChart";
-        public string InverterEnergyDataTotalChartUrl { get; set; } = "energy/compare/getDevicesTotalChart";
-        public string InverterEnergyDataTotalUrl { get; set; } = "panel/inv/getInvTotalChart";
-        public string InverterEnergyDataYearChartUrl { get; set; } = "energy/compare/getDevicesYearChart";
-        public string InverterEnergyDataYearUrl { get; set; } = "panel/inv/getInvYearChart";
-        public string InverterTotalsPath { get; set; } = "panel/inv/getInvTotalData";
-        public string LoginRelativeUrl { get; set; } = "login";
-        public string PlantData { get; set; } = "panel/getPlantData";
-        public string PlantList { get; set; } = "index/getPlantListTitle";
-        public string StorageBatChartData { get; set; } = "panel/storage/getStorageBatChart";
-        public string StorageEnergyDayChartData { get; set; } = "panel/storage/getStorageEnergyDayChart";
-        public string StorageStatusData { get; set; } = "panel/storage/getStorageStatusData";
-        public string StorageTotalData { get; set; } = "panel/storage/getStorageTotalData";
-        public string TcpSet { get; set; } = "tcpSet.do";
-        public string WeatherByPlantId { get; set; } = "index/getWeatherByPlantId";
-
         /// <summary>
         /// Gets data logger device information
         /// </summary>
@@ -45,7 +22,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("sn", serialNumber)
             });
 
-            return await GetPostResponseData<DeviceInfoDataLogger>(content, new Uri(GrowattApiBaseUrl, DeviceInfo), "obj");
+            return await GetPostResponseData<DeviceInfoDataLogger>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.DeviceInfo), "obj");
         }
 
         /// <summary>
@@ -60,7 +37,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("plantId", plantId),
             });
 
-            return await GetPostResponseData<List<DataLoggerDevice>>(content, new Uri(GrowattApiBaseUrl, DataLoggerDeviceList), "datas");
+            return await GetPostResponseData<List<DataLoggerDevice>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.DataLoggerDeviceList), "datas");
         }
 
         /// <summary>
@@ -75,7 +52,7 @@ namespace Ealse.Growatt.Api
                     new KeyValuePair<string, string>("plantId", plantId)
             });
 
-            return await GetPostResponseData<List<DeviceByPlant>>(content, new Uri(GrowattApiBaseUrl, DevicesByPlantList), "obj.datas");
+            return await GetPostResponseData<List<DeviceByPlant>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.DevicesByPlantList), "obj.datas");
         }
 
         /// <summary>
@@ -102,7 +79,7 @@ namespace Ealse.Growatt.Api
 
             });
 
-            return await GetPostResponseData<List<PlantFaultLog>>(content, new Uri(GrowattApiBaseUrl, PlantFaultLog), "obj.datas");
+            return await GetPostResponseData<List<PlantFaultLog>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.PlantFaultLog), "obj.datas");
         }
 
         /// <summary>
@@ -111,7 +88,7 @@ namespace Ealse.Growatt.Api
         /// <returns>Gets data for plant</returns>
         public async Task<PlantData> GetPlantData(string plantId)
         {
-            return await GetPostResponseData<PlantData>(new StringContent(string.Empty), new Uri(GrowattApiBaseUrl, PlantData + $"?plantId={plantId}"), "obj");
+            return await GetPostResponseData<PlantData>(new StringContent(string.Empty), new Uri(GrowattApiBaseUrl, RelativeUrls.PlantData + $"?plantId={plantId}"), "obj");
         }
 
         /// <summary>
@@ -128,7 +105,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
             });
 
-            return await GetPostResponseData<List<double?>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataDayChartUrl), $"obj.0.datas.{param}");
+            return await GetPostResponseData<List<double?>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataDayChart), $"obj.0.datas.{param}");
         }
 
         /// <summary>
@@ -143,7 +120,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("date", date.ToString("yyyy-MM-dd")),
             });
 
-            return await GetPostResponseData<List<double?>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataDayUrl), "obj.pac");
+            return await GetPostResponseData<List<double?>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataDay), "obj.pac");
         }
 
         /// <summary>
@@ -161,7 +138,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
             });
 
-            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataMonthChartUrl), $"obj.0.datas.{param}");
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataMonthChart), $"obj.0.datas.{param}");
         }
 
         /// <summary>
@@ -176,7 +153,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("date", date.ToString("yyyy-MM")),
             });
 
-            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataMonthUrl), "obj.energy");
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataMonth), "obj.energy");
         }
 
         /// <summary>
@@ -194,7 +171,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
             });
 
-            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataTotalChartUrl), $"obj.0.datas.{param}");
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataTotalChart), $"obj.0.datas.{param}");
         }
 
         /// <summary>
@@ -209,7 +186,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("year", DateTime.Now.ToString("yyyy")),
             });
 
-            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataTotalUrl), "obj.energy");
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataTotal), "obj.energy");
         }
 
         /// <summary>
@@ -227,7 +204,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("jsonData", $"[{{\"type\":\"{jsonDataType}\",\"sn\":\"{sn}\",\"params\":\"{param}\"}}]"),
             });
 
-            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataYearChartUrl), $"obj.0.datas.{param}");
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataYearChart), $"obj.0.datas.{param}");
         }
 
         /// <summary>
@@ -242,7 +219,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("year", date.ToString("yyyy")),
             });
 
-            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, InverterEnergyDataYearUrl), "obj.energy");
+            return await GetPostResponseData<List<double>>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.InverterEnergyDataYea), "obj.energy");
         }
 
         /// <summary>
@@ -251,7 +228,7 @@ namespace Ealse.Growatt.Api
         /// <returns>Current information of all plants</returns>
         public async Task<List<Plant>> GetPlantList()
         {
-            return await GetResponseData<List<Plant>>(new Uri(GrowattApiBaseUrl, PlantList), string.Empty);
+            return await GetResponseData<List<Plant>>(new Uri(GrowattApiBaseUrl, RelativeUrls.PlantList), string.Empty);
         }
 
         /// <summary>
@@ -260,7 +237,7 @@ namespace Ealse.Growatt.Api
         /// <returns>Gets data for plant</returns>
         public async Task<PlantDataTotals> GetPlantTotals(string plantId)
         {
-            return await GetPostResponseData<PlantDataTotals>(new StringContent(string.Empty), new Uri(GrowattApiBaseUrl, InverterTotalsPath + $"?plantId={plantId}"), "obj");
+            return await GetPostResponseData<PlantDataTotals>(new StringContent(string.Empty), new Uri(GrowattApiBaseUrl, RelativeUrls.InverterTotals + $"?plantId={plantId}"), "obj");
         }
 
         /// <summary>
@@ -275,7 +252,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("storageSn", storageSerialNumber)
             });
 
-            return await GetPostResponseData<StorageBatChartData>(content, new Uri(GrowattApiBaseUrl, StorageBatChartData), "obj");
+            return await GetPostResponseData<StorageBatChartData>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.StorageBatChartData), "obj");
         }
 
         /// <summary>
@@ -291,7 +268,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("sn", serialNumber)
             });
 
-            return await GetPostResponseData<DeviceInfoStorage>(content, new Uri(GrowattApiBaseUrl, DeviceInfo), "obj");
+            return await GetPostResponseData<DeviceInfoStorage>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.DeviceInfo), "obj");
         }
 
         /// <summary>
@@ -307,7 +284,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("storageSn", storageSerialNumber)
             });
 
-            return await GetPostResponseData<StorageEnergyDayChart>(content, new Uri(GrowattApiBaseUrl, StorageEnergyDayChartData), "obj");
+            return await GetPostResponseData<StorageEnergyDayChart>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.StorageEnergyDayChartData), "obj");
         }
 
         /// <summary>
@@ -317,7 +294,7 @@ namespace Ealse.Growatt.Api
         public async Task<StorageStatusData> GetStorageStatusDataByPlant(string plantId, string storageSerialNumber)
         {
             var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSerialNumber) });
-            return await GetPostResponseData<StorageStatusData>(content, new Uri(GrowattApiBaseUrl, StorageStatusData + $"?plantId={plantId}"), "obj");
+            return await GetPostResponseData<StorageStatusData>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.StorageStatusData + $"?plantId={plantId}"), "obj");
         }
 
         /// <summary>
@@ -327,7 +304,7 @@ namespace Ealse.Growatt.Api
         public async Task<StorageTotalData> GetStorageTotalDataByPlant(string plantId, string storageSerialNumber)
         {
             var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("storageSn", storageSerialNumber) });
-            return await GetPostResponseData<StorageTotalData>(content, new Uri(GrowattApiBaseUrl, StorageTotalData + $"?plantId={plantId}"), "obj.datas");
+            return await GetPostResponseData<StorageTotalData>(content, new Uri(GrowattApiBaseUrl, RelativeUrls.StorageTotalData + $"?plantId={plantId}"), "obj.datas");
         }
 
         /// <summary>
@@ -336,7 +313,7 @@ namespace Ealse.Growatt.Api
         /// <returns>Weather by plant</returns>
         public async Task<Weather> GetWeatherByPlant(string plantId)
         {
-            return await GetPostResponseData<Weather>(new StringContent(string.Empty), new Uri(GrowattApiBaseUrl, WeatherByPlantId + $"?plantId={plantId}"), "obj");
+            return await GetPostResponseData<Weather>(new StringContent(string.Empty), new Uri(GrowattApiBaseUrl, RelativeUrls.WeatherByPlantId + $"?plantId={plantId}"), "obj");
         }
 
         /// <summary>
@@ -357,7 +334,7 @@ namespace Ealse.Growatt.Api
                 formDictionary.Add($"param{i + 1}", parameters[i]);
             }
 
-            return await GetPostResponseData<SetSettingResponse>(new FormUrlEncodedContent(formDictionary), new Uri(GrowattApiBaseUrl, TcpSet), string.Empty);
+            return await GetPostResponseData<SetSettingResponse>(new FormUrlEncodedContent(formDictionary), new Uri(GrowattApiBaseUrl, RelativeUrls.TcpSet), string.Empty);
         }
     }
 }

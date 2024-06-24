@@ -18,6 +18,8 @@ namespace Ealse.Growatt.Api
 
         public Uri GrowattApiBaseUrl { get; set; } = new Uri("https://server.growatt.com/");
 
+        public RelativeUrl RelativeUrls { get; set; } = new RelativeUrl();
+
         public bool IsAuthenticated { get; set; }
         public string UserAgent { get; set; } = string.Empty;
 
@@ -88,7 +90,7 @@ namespace Ealse.Growatt.Api
                 new KeyValuePair<string, string>("validateCode", string.Empty),
             });
 
-            var response = client.PostAsync(LoginRelativeUrl, content).Result;
+            var response = client.PostAsync(RelativeUrls.Login, content).Result;
 
             if (response.IsSuccessStatusCode)
             {
