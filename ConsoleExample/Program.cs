@@ -51,6 +51,7 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("");
 
     var dataLoggerDevice = await session.GetDataLoggerDeviceInfo(plant.Id, device.DataLoggerSerialNumber);
+    var dataLoggerDevices = await session.GetDataLoggerDevices(plant.Id);
     var plantTotals = await session.GetPlantTotals(plant.Id);
     var utcDateTime = DateTime.Parse(device.TimeServer).AddHours(-8);
     var localDateTime = utcDateTime.AddHours(double.Parse(device.TimeZone));
@@ -73,6 +74,7 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine(tableAlignment, "----- Firmware Version:", $"{dataLoggerDevice.FirmwareVersion}");
     Console.WriteLine(tableAlignment, "----- Ip & Port:", $"{dataLoggerDevice.IpAndPort}");
     Console.WriteLine(tableAlignment, "----- Data Update Interval:", $"{dataLoggerDevice.Interval} Minute");
+    Console.WriteLine(tableAlignment, "----- Wireless type:", $"{dataLoggerDevices.First().WirelessType}");
     Console.WriteLine(tableAlignment, "- Total Energy(kWh):", $"{device.EnergyTotal}");
     Console.WriteLine(tableAlignment, "- Rated Power(W):", $"{device.NominalPower}");
     Console.WriteLine(tableAlignment, "- Current Power(W):", $"{device.Pac}");

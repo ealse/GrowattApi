@@ -8,6 +8,7 @@ namespace Ealse.Growatt.Api
 {
     public partial class Session : IDisposable
     {
+        public string DataLoggerDeviceList { get; set; } = "device/getDatalogList";
         public string DeviceInfo { get; set; } = "panel/getDeviceInfo";
         public string DevicesByPlantList { get; set; } = "panel/getDevicesByPlantList";
         public string InverterEnergyDataDayChartUrl { get; set; } = "energy/compare/getDevicesDayChart";
@@ -43,6 +44,21 @@ namespace Ealse.Growatt.Api
             });
 
             return await GetPostResponseData<DeviceInfoDataLogger>(content, new Uri(GrowattApiBaseUrl, DeviceInfo), "obj");
+        }
+
+        /// <summary>
+        /// Gets information of data logger devices
+        /// </summary>
+        /// <returns>Data logger devices information</returns>
+        public async Task<List<DataLoggerDevice>> GetDataLoggerDevices(string plantId, string currentPage = "1")
+        {
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("currPage", currentPage),
+                new KeyValuePair<string, string>("plantId", plantId),
+            });
+
+            return await GetPostResponseData<List<DataLoggerDevice>>(content, new Uri(GrowattApiBaseUrl, DataLoggerDeviceList), "datas");
         }
 
         /// <summary>
