@@ -419,7 +419,6 @@ namespace Ealse.Growatt.Api.Helpers
                         break;
                 }
             }
-            
 
             return status;
         }

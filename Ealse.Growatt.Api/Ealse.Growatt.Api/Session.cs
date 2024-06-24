@@ -67,7 +67,6 @@ namespace Ealse.Growatt.Api
             {
                 var userlogin = await GetNewSession();
                 IsAuthenticated = userlogin.IsAuthenticated;
-
             }
             catch (Exception ex)
             {

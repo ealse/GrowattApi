@@ -4,43 +4,43 @@ namespace Ealse.Growatt.Api.Models
 {
     public class WeatherNow
     {
+        [JsonPropertyName("cloud")]
+        public string Cloud { get; set; }
+
         [JsonPropertyName("cond_code")]
-        public string ConditionCode { get; set; } 
+        public string ConditionCode { get; set; }
 
         [JsonPropertyName("cond_txt")]
-        public string ConditionText { get; set; } 
-
-        [JsonPropertyName("hum")]
-        public string Humidity { get; set; } 
+        public string ConditionText { get; set; }
 
         [JsonPropertyName("fl")]
-        public string Fl { get; set; } 
+        public string Fl { get; set; }
+
+        [JsonPropertyName("hum")]
+        public string Humidity { get; set; }
 
         [JsonPropertyName("pcpn")]
-        public string Pcpn { get; set; } 
-
-        [JsonPropertyName("wind_spd")]
-        public string WindSpeed { get; set; } 
-
-        [JsonPropertyName("cloud")]
-        public string Cloud { get; set; } 
-
-        [JsonPropertyName("tmp")]
-        public string Temperature { get; set; } 
-
-        [JsonPropertyName("wind_dir")]
-        public string WindDirection { get; set; } 
-
-        [JsonPropertyName("wind_sc")]
-        public string WindSc { get; set; } 
-
-        [JsonPropertyName("wind_deg")]
-        public string WindDegrees { get; set; } 
+        public string Pcpn { get; set; }
 
         [JsonPropertyName("pres")]
-        public string Pressure { get; set; } 
+        public string Pressure { get; set; }
+
+        [JsonPropertyName("tmp")]
+        public string Temperature { get; set; }
 
         [JsonPropertyName("vis")]
-        public string Visibility { get; set; } 
+        public string Visibility { get; set; }
+
+        [JsonPropertyName("wind_deg")]
+        public string WindDegrees { get; set; }
+
+        [JsonPropertyName("wind_dir")]
+        public string WindDirection { get; set; }
+
+        [JsonPropertyName("wind_sc")]
+        public string WindSc { get; set; }
+
+        [JsonPropertyName("wind_spd")]
+        public string WindSpeed { get; set; }
     }
 }

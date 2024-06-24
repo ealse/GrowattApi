@@ -15,7 +15,7 @@ namespace Ealse.Growatt.Api.Extensions
         /// <returns>Part of the json by path</returns>
         internal static JsonElement GetJsonElementByPath(this JsonElement jsonElement, string path)
         {
-            if(string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path))
                 return jsonElement;
 
             if (jsonElement.ValueKind is JsonValueKind.Null || jsonElement.ValueKind is JsonValueKind.Undefined)

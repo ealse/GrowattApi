@@ -80,7 +80,6 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("--------------------------------");
     Console.WriteLine("");
 
-
     if (devices != null && devices != null && device.Sn != null && userHasStorageDevice)
     {
         var totalStorageData = await session.GetStorageTotalDataByPlant(plant.Id, device.Sn);
@@ -106,7 +105,7 @@ if (plants != null && plant != null && plant.Id != null)
         Console.WriteLine("-------------------");
         Console.WriteLine("");
         Console.WriteLine("----- Load Consumption -------");
-        Console.WriteLine(tableAlignment, "- Today:",$"{totalStorageData.UseEnergyToday} kWh");
+        Console.WriteLine(tableAlignment, "- Today:", $"{totalStorageData.UseEnergyToday} kWh");
         Console.WriteLine(tableAlignment, "- Total:", $"{totalStorageData.UseEnergyTotal} kWh");
         Console.WriteLine("-------------------");
         Console.WriteLine("");

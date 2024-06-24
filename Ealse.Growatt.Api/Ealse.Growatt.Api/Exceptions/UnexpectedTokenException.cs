@@ -9,7 +9,6 @@ namespace Ealse.Growatt.Api.Exceptions
     {
         private const string defaultMessage = "Unexpected Json Token Type.";
 
-
         public UnexpectedTokenException() : base(defaultMessage)
         {
         }
