@@ -6,6 +6,12 @@ using Ealse.Growatt.Api.Models;
 var userHasStorageDevice = false;
 var session = new Session("username", "password");
 
+if (session.Username == "username")
+{
+    Console.WriteLine("Use your own username and password.");
+    return;
+}
+
 var plants = await session.GetPlantList();
 var plant = plants[0];
 
