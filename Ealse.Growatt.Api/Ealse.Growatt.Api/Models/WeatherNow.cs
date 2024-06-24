@@ -28,9 +28,6 @@ namespace Ealse.Growatt.Api.Models
         [JsonPropertyName("tmp")]
         public string Temperature { get; set; }
 
-        [JsonPropertyName("vis")]
-        public string Visibility { get; set; }
-
         [JsonPropertyName("wind_deg")]
         public string WindDegrees { get; set; }
 

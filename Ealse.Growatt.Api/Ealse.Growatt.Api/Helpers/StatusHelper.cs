@@ -39,6 +39,9 @@ namespace Ealse.Growatt.Api.Helpers
                 case "igenInv":
                     status = getIgenDeviceStatus(device.Status, int.Parse(device.DeviceType));
                     break;
+                case "inv":
+                    status = getMixDeviceStatus(device.Status);
+                    break;
                 case "pumper":
                     status = getPumperDeviceStatus(device.Status);
                     break;

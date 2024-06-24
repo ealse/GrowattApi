@@ -19,6 +19,9 @@ namespace Ealse.Growatt.Api.Models
         [JsonPropertyName("ipAndPort")]
         public string IpAndPort { get; set; }
 
+        [JsonPropertyName("sn")]
+        public string Sn { get; set; }
+
         [JsonPropertyName("simSignal")]
         public string SimSignal { get; set; }
     }

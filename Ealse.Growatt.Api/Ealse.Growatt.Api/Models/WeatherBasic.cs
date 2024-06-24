@@ -7,9 +7,6 @@ namespace Ealse.Growatt.Api.Models
         [JsonPropertyName("admin_area")]
         public string AdminArea { get; set; }
 
-        [JsonPropertyName("cid")]
-        public string Cid { get; set; }
-
         [JsonPropertyName("cnty")]
         public string Country { get; set; }
 

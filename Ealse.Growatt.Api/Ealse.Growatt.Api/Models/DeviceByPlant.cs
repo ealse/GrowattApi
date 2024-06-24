@@ -37,8 +37,8 @@ namespace Ealse.Growatt.Api.Models
         [JsonPropertyName("eTotal")]
         public string ETotal { get; set; }
 
-        [JsonPropertyName("lastUpdateDateTime")]
-        public string LastUpdateDateTime { get; set; }
+        [JsonPropertyName("lastUpdateTime")]
+        public string LastUpdateTime { get; set; }
 
         [JsonPropertyName("location")]
         public string Location { get; set; }
