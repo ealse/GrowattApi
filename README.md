@@ -1,23 +1,34 @@
 # Growatt API
-API in .NET Standard 2.0 to communicate with a Growatt server for retrieving data on solar panels and storage devices. It is device dependent, so not all methods may work for every device type. The example project shows most of the methods that can be called.
+API in .NET Standard 2.0 to communicate with a Growatt server for changing settings and retrieving data from your solar panels and storage devices. It is device dependent, so not all methods may work for every device type. The example project shows most of the methods that can be called.
 
 Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 
 ## Version History
 
-0.1 - Released September 28, 2019 - by ealse
-
-- Initial version
-
-0.2 - Released August 7, 2022 - by jpvdm1 and ealse
+0.2 - Released August 7, 2022
 
 - Changed login method
 - Added new methods for storage and getting inverter data.
-- Added a console example to show usage
-- Updated exsting methods to new Growatt api calls
+- Updated existing methods to new Growatt api calls
 - Added possibility for changing api urls
 
-## Console Example output (example)
+0.1 - Released September 28, 2019
+- Initial version
+
+## Change device settings
+
+The following method can be used to change your device settings.
+
+```C#
+PostSetting(string action, string serialNumber, string type, string[] parameters)
+```
+
+To discover which "action", "type" and "parameters" you should use, you can log in to [Growatt](https://server.growatt.com/login) and go to the place where the settings can be changed. Open the Network tab in the browser development tools and make a change to the settings. Now you will see a request with the request url `https://server.growatt.com/tcpSet.do` look into the payload to find the "action", "type" and "parameters" properties. The values of the parameters should be in the same order as in the payload: ["value param1", "value param2"]
+
+Note: if you need a password please enter: `growattYYYYMMDD` using today's date.
+
+
+## Console Example output (example with part of the options)
 ```
 ----- Weather -------
 - City: ABCDEFGHJ
@@ -89,7 +100,7 @@ Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 - Battery Voltage: 12.3
 - PV1/PV2 Voltage: 123.4/0 V
 - PV1/PV2 Recharging Current: 1.2/0 A
-- Totale Charge Current: 1.2 A
+- Total Charge Current: 1.2 A
 - Ac Input Voltage/Frequency: 123.4V/12.3Hz
 - Ac Output Voltage/Frequency: 123.4V/12.3Hz
 - Consumption Power: 1234W/1234VA
@@ -133,10 +144,6 @@ Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 ## System Requirements
 
 This API is built using the Microsoft .NET Standard 2.0 framework and is fully asynchronous
-
-## Warning
-
-Growatt has not officially released an API. This API has been created by mimicking the traffic to their own web application. This means they can change their Api at any time causing this Api and your code to break without advanced notice. Be sure you understand the consequences of this before using any Growatt Api in your own software.
 
 ## Usage Instructions
 
@@ -192,6 +199,12 @@ var plantData = await session.GetPlantData("Plant Id");
 
 For other method usage please look at the console example.
 
+## Warning
+
+Growatt has not officially released an API. This API has been created by mimicking the traffic to their own web application. This means they can change their Api at any time causing this Api and your code to break without advanced notice.
+
+The developers who contributed to this project are not responsible for any problem or damage to your Growatt systems that result from using this library. Be sure you understand the consequences of this before using the Growatt Api in your own software.
+
 ## Available via NuGet
 
 You can also pull this API in as a NuGet package by adding "Ealse.Growatt.Api" or running:
@@ -199,7 +212,3 @@ You can also pull this API in as a NuGet package by adding "Ealse.Growatt.Api" o
 Install-Package Ealse.Growatt.Api
 
 Package statistics: https://www.nuget.org/packages/Ealse.Growatt.Api
-
-## Feedback
-
-Any kind of feedback is welcome!
