@@ -6,8 +6,7 @@ namespace Ealse.Growatt.Api.Helpers
     {
         public static string getDeviceTypeStatus(DeviceByPlant device)
         {
-            string status = "N/A";
-
+            string status;
             switch (device.DeviceTypeName)
             {
                 case "max":
@@ -53,8 +52,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getStorageDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "-1":
@@ -115,8 +113,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getMaxDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "-1":
@@ -139,8 +136,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getMixDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "-1":
@@ -175,8 +171,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getPcsDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "0":
@@ -210,8 +205,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getHpsDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "0":
@@ -245,8 +239,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getSpaDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "-1":
@@ -281,8 +274,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getTlxDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "0":
@@ -316,8 +308,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getPbdDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "0":
@@ -351,8 +342,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getEybondDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "0":
@@ -374,8 +364,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getIgenDeviceStatus(string deviceStatus, int deviceType)
         {
-            string status = "N/A";
-
+            string status;
             if (deviceType >= 20 && deviceType <= 30)
             {
                 switch (deviceStatus)
@@ -425,8 +414,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getPumperDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "1":
@@ -450,8 +438,7 @@ namespace Ealse.Growatt.Api.Helpers
 
         public static string getGenericDeviceStatus(string deviceStatus)
         {
-            string status = "N/A";
-
+            string status;
             switch (deviceStatus)
             {
                 case "0":

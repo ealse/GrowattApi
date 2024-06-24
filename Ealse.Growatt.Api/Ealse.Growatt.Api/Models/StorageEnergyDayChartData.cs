@@ -6,15 +6,15 @@ namespace Ealse.Growatt.Api.Models
     public class StorageEnergyDayChartData
     {
         [JsonPropertyName("pacToUser")]
-        public List<System.Nullable<double>> PacToUser { get; set; }
+        public List<double?> PacToUser { get; set; }
 
         [JsonPropertyName("ppv")]
-        public List<System.Nullable<double>> Ppv { get; set; }
+        public List<double?> Ppv { get; set; }
 
         [JsonPropertyName("sysOut")]
-        public List<System.Nullable<double>> SysOut { get; set; }
+        public List<double?> SysOut { get; set; }
 
         [JsonPropertyName("userLoad")]
-        public List<System.Nullable<double>> UserLoad { get; set; }
+        public List<double?> UserLoad { get; set; }
     }
 }

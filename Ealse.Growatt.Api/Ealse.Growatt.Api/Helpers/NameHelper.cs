@@ -71,7 +71,7 @@ namespace Ealse.Growatt.Api.Helpers
             else if (rawName == "mcVersion")
                 return "BCUVersion"; //电池主控软件版本号
 
-            return "";
+            return string.Empty;
         }
     }
 }

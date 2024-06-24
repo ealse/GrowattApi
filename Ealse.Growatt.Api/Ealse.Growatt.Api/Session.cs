@@ -65,8 +65,8 @@ namespace Ealse.Growatt.Api
         {
             try
             {
-                var userlogin = await GetNewSession();
-                IsAuthenticated = userlogin.IsAuthenticated;
+                var userLogin = await GetNewSession();
+                IsAuthenticated = userLogin.IsAuthenticated;
             }
             catch (Exception ex)
             {
@@ -76,8 +76,11 @@ namespace Ealse.Growatt.Api
 
         private async Task<LoginInfo> GetNewSession()
         {
-            var loginInfo = new LoginInfo();
-            loginInfo.IsAuthenticated = false;
+            var loginInfo = new LoginInfo
+            {
+                IsAuthenticated = false
+            };
+
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("account", Username),
@@ -179,8 +182,7 @@ namespace Ealse.Growatt.Api
             var response = await PostMessageReturnResponse(uri, content, HttpStatusCode.OK);
             var result = JsonSerializer.Deserialize<responseType>(response.GetPartOfJson(jsonPath));
 
-            if (result == null) throw new Exceptions.RequestFailedException(uri, new Exception("Deserialization error"));
-            return result;
+            return result == null ? throw new Exceptions.RequestFailedException(uri, new Exception("Deserialization error")) : result;
         }
 
         private async Task<responseType> GetResponseData<responseType>(Uri uri, string jsonPath)
@@ -188,8 +190,7 @@ namespace Ealse.Growatt.Api
             var response = await GetMessageReturnResponse(uri, HttpStatusCode.OK);
             var result = JsonSerializer.Deserialize<responseType>(response.GetPartOfJson(jsonPath));
 
-            if (result == null) throw new Exceptions.RequestFailedException(uri, new Exception("Deserialization error"));
-            return result;
+            return result == null ? throw new Exceptions.RequestFailedException(uri, new Exception("Deserialization error")) : result;
         }
     }
 }
