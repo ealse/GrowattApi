@@ -1,4 +1,5 @@
-﻿using Ealse.Growatt.Api.Models;
+﻿using Ealse.Growatt.Api.Enum;
+using Ealse.Growatt.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,6 +12,7 @@ namespace Ealse.Growatt.Api
         public string DataLoggerDeviceList { get; set; } = "device/getDatalogList";
         public string DeviceInfo { get; set; } = "panel/getDeviceInfo";
         public string DevicesByPlantList { get; set; } = "panel/getDevicesByPlantList";
+        public string PlantFaultLog { get; set; } = "log/getNewPlantFaultLog";
         public string InverterEnergyDataDayChartUrl { get; set; } = "energy/compare/getDevicesDayChart";
         public string InverterEnergyDataDayUrl { get; set; } = "panel/inv/getInvDayChart";
         public string InverterEnergyDataMonthChartUrl { get; set; } = "energy/compare/getDevicesMonthChart";
@@ -74,6 +76,33 @@ namespace Ealse.Growatt.Api
             });
 
             return await GetPostResponseData<List<DeviceByPlant>>(content, new Uri(GrowattApiBaseUrl, DevicesByPlantList), "obj.datas");
+        }
+
+        /// <summary>
+        /// Gets devices by plant
+        /// </summary>
+        /// <returns>Devices by plant</returns>
+        public async Task<List<PlantFaultLog>> GetPlantFaultLogs(string plantId, DateTime date, DateFilterType dateFilterType,
+            string deviceSerialNumberFilter = "", string currentPage = "1")
+        {
+            var formattedDate = date.ToString("yyyy-MM-dd");
+
+            if (dateFilterType == DateFilterType.Month)
+                formattedDate = date.ToString("yyyy-MM");
+            if (dateFilterType == DateFilterType.Year)
+                formattedDate = date.ToString("yyyy");
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+                    new KeyValuePair<string, string>("plantId", plantId),
+                    new KeyValuePair<string, string>("deviceSn", deviceSerialNumberFilter),
+                    new KeyValuePair<string, string>("date", formattedDate),
+                    new KeyValuePair<string, string>("type", ((int) dateFilterType).ToString()),
+                    new KeyValuePair<string, string>("toPageNum", currentPage),
+
+            });
+
+            return await GetPostResponseData<List<PlantFaultLog>>(content, new Uri(GrowattApiBaseUrl, PlantFaultLog), "obj.datas");
         }
 
         /// <summary>

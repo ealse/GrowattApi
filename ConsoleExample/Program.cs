@@ -188,8 +188,23 @@ if (plants != null && plant != null && plant.Id != null)
                 now = now.AddMinutes(int.Parse(dataLoggerDevice.Interval));
             }
         }
-
-        Console.WriteLine("--------------------------------");
-        Console.WriteLine("");
     }
+
+    Console.WriteLine("--------------------------------");
+    Console.WriteLine("");
+    var logs = await session.GetPlantFaultLogs(plant.Id, DateTime.Now, Ealse.Growatt.Api.Enum.DateFilterType.Year);
+
+    ///GetPlantFaultLogs
+    Console.WriteLine("----- Fault log -------");
+    if (logs.Count != 0)
+    {
+        Console.WriteLine(tableAlignment, "- Latest log message is:", $"{logs[0].EventSolution}");
+    }
+    else
+    {
+        Console.WriteLine("No logs found");
+    }
+
+    Console.WriteLine("--------------------------------");
+    Console.WriteLine("");
 }
