@@ -5,6 +5,15 @@ Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 
 ## Version History
 
+1.0 - Released 25 June, 2024 (contains breaking changes)
+- Update package System.Text.Json
+- Option added to change settings (session.PostSetting(...))
+- removed unused field and added new fields to existing reponses
+- Added option to get plant totals
+- Added option to get data logger devices
+- Added option to get plant fault logs
+- Code cleanup and improved property and methodnames
+
 0.2 - Released August 7, 2022
 
 - Changed login method
@@ -13,6 +22,7 @@ Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 - Added possibility for changing api urls
 
 0.1 - Released September 28, 2019
+
 - Initial version
 
 ## Change device settings
