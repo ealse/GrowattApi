@@ -94,10 +94,15 @@ namespace Ealse.Growatt.Api
         /// <summary>
         /// Gets amount of power generated for each 5 minutes of the given day.
         /// </summary>
+        /// <param name="plantId"></param>
+        /// <param name="date"></param>
+        /// <param name="serialNumber"></param>
+        /// <param name="param"></param>
+        /// <param name="deviceTypeName">When serialNumber is given the deviceTypeName should also be given</param>
         /// <returns>Amount of power generated for each 5 minutes of the given day.</returns>
-        public async Task<List<double?>> GetPlantDetailDayChartData(string plantId, DateTime date, string serialNumber = null, string param = InverterPlantParameters.Power.Pac)
+        public async Task<List<double?>> GetPlantDetailDayChartData(string plantId, DateTime date, string serialNumber = null, string param = InverterPlantParameters.Power.Pac, string deviceTypeName = "")
         {
-            var jsonDataType = string.IsNullOrEmpty(serialNumber) ? "plant" : "inv";
+            var jsonDataType = string.IsNullOrEmpty(serialNumber) ? "plant" : deviceTypeName;
             var sn = serialNumber ?? plantId;
             var content = new FormUrlEncodedContent(new[]{
                 new KeyValuePair<string, string>("plantId", plantId),
@@ -124,12 +129,18 @@ namespace Ealse.Growatt.Api
         }
 
         /// <summary>
-        /// Gets amount of power generated for each day of the given month.
+        /// Gets amount of power generated for each day of the given month. 
         /// </summary>
+        /// <param name="plantId"></param>
+        /// <param name="date"></param>
+        /// <param name="serialNumber"></param>
+        /// <param name="type"></param>
+        /// <param name="param"></param>
+        /// <param name="deviceTypeName">When serialNumber is given the deviceTypeName should also be given</param>
         /// <returns>Amount of power generated for each day of the given month.</returns>
-        public async Task<List<double>> GetPlantDetailMonthChartData(string plantId, DateTime date, string serialNumber = null, string type = null, string param = "energy")
+        public async Task<List<double>> GetPlantDetailMonthChartData(string plantId, DateTime date, string serialNumber = null, string type = null, string param = "energy", string deviceTypeName = "")
         {
-            var jsonDataType = type is null ? string.IsNullOrEmpty(serialNumber) ? "plant" : "inv" : type;
+            var jsonDataType = string.IsNullOrEmpty(serialNumber) ? "plant" : deviceTypeName;
             var sn = type is null && serialNumber != null ? serialNumber : plantId;
             var content = new FormUrlEncodedContent(new[]
             {

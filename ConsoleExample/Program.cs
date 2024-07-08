@@ -1,6 +1,5 @@
 ﻿using Ealse.Growatt.Api;
 using Ealse.Growatt.Api.Helpers;
-using Ealse.Growatt.Api.Models;
 
 // Insert your own information
 var userHasStorageDevice = false;
@@ -33,17 +32,18 @@ if (plants != null && plant != null && plant.Id != null)
     Console.WriteLine("---------------------");
     Console.WriteLine("");
 
+    var dataStepPerNumberOfMinutes = 5;
     var devices = await session.GetDevicesByPlantList(plant.Id);
     var device = devices[0];
     var allPlantDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now);
-    var allPlantVoltageDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now, serialNumber: device.SerialNumber, param: InverterPlantParameters.Voltage.Mppt1);
-    var allPlantDataPerDayForGivenMonth = await session.GetPlantDetailMonthChartData(plant.Id, DateTime.Now);
+    var allPlantVoltageDataForGivenDay = await session.GetPlantDetailDayChartData(plant.Id, DateTime.Now, serialNumber: device.SerialNumber, param: "VAC1", deviceTypeName: device.DeviceTypeName);
+    var allPlantDataPerDayForGivenMonth = await session.GetPlantDetailMonthChartData(plant.Id, DateTime.Now, serialNumber: device.SerialNumber, deviceTypeName: device.DeviceTypeName);
     var allPlantDataPerMonthForGivenYear = await session.GetPlantDetailYearChartData(plant.Id, DateTime.Now);
     var allPlantDataPerYear = await session.GetPlantDetailTotalChartData(plant.Id);
 
     Console.WriteLine("----- My Solar Panel Information -------");
-    Console.WriteLine(tableAlignment, "- Today at 13:45:", $"{allPlantDataForGivenDay[(13 * 60 + 45) / 5] ?? 0} W");
-    Console.WriteLine(tableAlignment, "- Today at 13:45:", $"{allPlantVoltageDataForGivenDay[(13 * 60 + 45) / 5] ?? 0} Voltage");
+    Console.WriteLine(tableAlignment, $"- Today at {DateTime.Now.AddMinutes(-20):HH:mm}:", $"{allPlantDataForGivenDay[(DateTime.Now.Hour * 60) / dataStepPerNumberOfMinutes + (DateTime.Now.Minute - 20) / dataStepPerNumberOfMinutes] ?? 0} W");
+    Console.WriteLine(tableAlignment, $"- Today at {DateTime.Now.AddMinutes(-20):HH:mm}:", $"{allPlantVoltageDataForGivenDay[(DateTime.Now.Hour * 60) / dataStepPerNumberOfMinutes + (DateTime.Now.Minute - 20) / dataStepPerNumberOfMinutes] ?? 0} Voltage");
     Console.WriteLine(tableAlignment, $"- {DateTime.Now:yyyy-MM-01}:", $"{allPlantDataPerDayForGivenMonth[0]} kWh");
     Console.WriteLine(tableAlignment, $"- {DateTime.Now:yyyy-MM}:", $"{allPlantDataPerMonthForGivenYear[DateTime.Now.Month - 1]} kWh");
     Console.WriteLine(tableAlignment, $"- {DateTime.Now:yyyy}:", $"{allPlantDataPerYear.Last()} kWh");
