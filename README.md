@@ -5,6 +5,9 @@ Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 
 ## Version History
 
+1.1 - Released 8 July, 2024
+- Bug fix hard-coded deviceTypeName for GetPlantDetail 
+
 1.0 - Released 25 June, 2024 (contains breaking changes)
 - Update package System.Text.Json
 - Option added to change settings (session.PostSetting(...))
