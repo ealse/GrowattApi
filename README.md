@@ -3,31 +3,6 @@ API in .NET Standard 2.0 to communicate with a Growatt server for changing setti
 
 Available via Nuget: https://www.nuget.org/packages/Ealse.Growatt.Api
 
-## Version History
-
-1.1 - Released 8 July, 2024
-- Bug fix hard-coded deviceTypeName for GetPlantDetail 
-
-1.0 - Released 25 June, 2024 (contains breaking changes)
-- Update package System.Text.Json
-- Option added to change settings (session.PostSetting(...))
-- removed unused field and added new fields to existing reponses
-- Added option to get plant totals
-- Added option to get data logger devices
-- Added option to get plant fault logs
-- Code cleanup and improved property and methodnames
-
-0.2 - Released August 7, 2022
-
-- Changed login method
-- Added new methods for storage and getting inverter data.
-- Updated existing methods to new Growatt api calls
-- Added possibility for changing api urls
-
-0.1 - Released September 28, 2019
-
-- Initial version
-
 ## Change device settings
 
 The following method can be used to change your device settings.
