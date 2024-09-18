@@ -7,7 +7,7 @@
 		<PackageProjectUrl>https://github.com/ealse/GrowattApi</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/ealse/GrowattApi</RepositoryUrl>
 		<PackageReleaseNotes>https://github.com/ealse/GrowattApi/blob/master/README.md</PackageReleaseNotes>
-		<Version>1.2.0</Version>
+		<Version>1.2.1</Version>
 		<Authors>ealse</Authors>
 		<Description>
 			API in .NET Standard 2.0 to communicate with a Growatt server for changing settings and retrieving data from your solar panels and storage devices.
