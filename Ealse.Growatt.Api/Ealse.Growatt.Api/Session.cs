@@ -179,7 +179,7 @@ namespace Ealse.Growatt.Api
             }
         }
 
-        private async Task<responseType> GetPostResponseData<responseType>(HttpContent content, Uri uri, string jsonPath)
+        public async Task<responseType> GetPostResponseData<responseType>(HttpContent content, Uri uri, string jsonPath)
         {
             var response = await PostMessageReturnResponse(uri, content, HttpStatusCode.OK);
             var result = JsonSerializer.Deserialize<responseType>(response.GetPartOfJson(jsonPath));
@@ -187,7 +187,7 @@ namespace Ealse.Growatt.Api
             return result == null ? throw new Exceptions.RequestFailedException(uri, new Exception("Deserialization error")) : result;
         }
 
-        private async Task<responseType> GetResponseData<responseType>(Uri uri, string jsonPath)
+        public async Task<responseType> GetResponseData<responseType>(Uri uri, string jsonPath)
         {
             var response = await GetMessageReturnResponse(uri, HttpStatusCode.OK);
             var result = JsonSerializer.Deserialize<responseType>(response.GetPartOfJson(jsonPath));
